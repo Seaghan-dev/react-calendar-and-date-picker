@@ -2,7 +2,7 @@
 
 This repository provides a custom implementation of a Calendar and DatePicker in React.
 
-[View demo in stackblitz]
+[View demo in Stackblitz](https://stackblitz.com/~/github.com/Seaghan-dev/react-calendar-and-date-picker)
 
 ## Setup
 
