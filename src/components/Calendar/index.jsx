@@ -34,10 +34,6 @@ export default function Calendar({ date = null, onSelect }) {
     (_, index) => ++index
   );
 
-  const yearRange = getYearRange(viewingDate.year);
-  const lastPreviousYear = yearRange[0] - 1;
-  const firstFollowingYear = yearRange[yearRange.length - 1] + 1;
-
   const previousMonthDays = Array.from(
     new Array(viewingDate.startOf('month').weekday),
     (_, index) => previousMonthDate.daysInMonth - index
@@ -47,6 +43,10 @@ export default function Calendar({ date = null, onSelect }) {
     new Array(totalDaysCell - (monthDays.length + previousMonthDays.length)),
     (_, index) => ++index
   );
+
+  const yearRange = getYearRange(viewingDate.year);
+  const lastPreviousYear = yearRange[0] - 1;
+  const firstFollowingYear = yearRange[yearRange.length - 1] + 1;
 
   const handlePreviousNavigation = () => {
     if (calendarView === 'day') {

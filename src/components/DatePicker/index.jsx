@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { useMask } from '@react-input/mask';
 import {
   useFloating,
@@ -11,8 +11,9 @@ import { DateTime } from 'luxon';
 
 import './DatePicker.css';
 import Calendar from '../Calendar';
+import { mergeRefs } from '../../lib/mergeRefs'
 
-export default function DatePicker({ value, onChange, ...rest }) {
+export default forwardRef(function DatePicker({ value, onChange, ...rest }, ref) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -97,12 +98,13 @@ export default function DatePicker({ value, onChange, ...rest }) {
       >
         <span className="date-picker-icon">📅</span>
         <input
-          ref={inputRef}
+          ref={mergeRefs(ref, inputRef)}
           placeholder="YYYY-MM-DD"
           className="date-picker-input"
           value={value ?? selectedDate ?? ''}
           onChange={handleDateInput}
           {...rest}
+          type="text"
         />
       </div>
       {showCalendar && (
@@ -123,4 +125,4 @@ export default function DatePicker({ value, onChange, ...rest }) {
       )}
     </>
   );
-}
+})
