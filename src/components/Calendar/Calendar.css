@@ -1,0 +1,134 @@
+.calendar-root {
+  border: 1px solid;
+  min-width: 262px;
+  max-width: 262px;
+  padding: 12px 8px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.calendar-header-nav {
+  font-weight: bolder;
+  padding: 12px 16px;
+  border-radius: 9999px;
+  background-color: transparent;
+  border: none;
+}
+
+.calendar-header-nav:hover {
+  background-color: #eee;
+}
+
+.calendar-header-title {
+  flex: 2;
+  font-weight: bold;
+  padding: 12px 4px;
+  border-radius: 4px;
+  background-color: transparent;
+  border: none;
+}
+
+.calendar-header-title:hover {
+  background-color: #eee;
+}
+
+.calendar-days-view {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr);
+  padding: 4px;
+  gap: 4px;
+}
+
+.calendar-days-view-item {
+  padding: 4px;
+}
+
+span.calendar-days-view-item {
+  font-weight: bolder;
+  user-select: none;
+}
+
+button.calendar-days-view-item {
+  border: none;
+  border-radius: 9999px;
+  background-color: transparent;
+}
+
+button.calendar-days-view-item[data-is-date-today='true'] {
+  color: #db3d44;
+}
+
+button.calendar-days-view-item[data-selected='true'] {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+button.calendar-days-view-item:hover {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+.calendar-months-view {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  padding: 8px;
+  gap: 8px;
+}
+
+.calendar-months-view-item {
+  padding: 20px 8px;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+}
+
+.calendar-months-view-item[data-selected='true'] {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+.calendar-months-view-item:hover {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+.calendar-years-view {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  padding: 8px;
+  gap: 8px;
+}
+
+.calendar-years-view-item {
+  padding: 20px 8px;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+}
+
+.calendar-years-view-item[data-selected='true'] {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+.calendar-years-view-item:hover {
+  background-color: #db3d44;
+  color: #fff;
+  font-weight: bold;
+}
+
+.not-in-current-view {
+  color: #eee;
+}

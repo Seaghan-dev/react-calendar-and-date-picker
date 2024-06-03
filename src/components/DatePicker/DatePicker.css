@@ -1,0 +1,26 @@
+.date-picker-root {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #cacaca;
+  border-radius: 4px;
+}
+
+.date-picker-icon {
+  user-select: none;
+}
+
+.date-picker-root:has(.date-picker-input:hover) {
+  border-color: #008cc7;
+}
+
+.date-picker-root:focus-within {
+  border-color: #008cc7;
+}
+
+.date-picker-input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
