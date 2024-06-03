@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { DateTime } from 'luxon';
 
 import './App.css';
 import Calendar from './components/Calendar';
 import DatePicker from './components/DatePicker';
 
 function App() {
-  const [date, setDate] = useState(DateTime.local().toISODate());
+  const [calendarDate, setCalendarDate] = useState(null);
+
   return (
     <div className="app-root">
       <div>
-        <Calendar date={date} onSelect={setDate} />
+        <Calendar date={calendarDate} onSelect={setCalendarDate} />
       </div>
-      <DatePicker />
+      <div>
+        <DatePicker />
+      </div>
     </div>
   );
 }
