@@ -19,6 +19,10 @@
   border-color: #008cc7;
 }
 
+.date-picker-root[data-is-calendar-open=true] {
+  border-color: #008cc7;
+}
+
 .date-picker-input {
   border: none;
   outline: none;

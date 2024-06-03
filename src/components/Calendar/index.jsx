@@ -23,22 +23,23 @@ export default function Calendar({ date = null, onSelect }) {
   const currentDate = DateTime.fromJSDate(new Date(date)).startOf('day');
 
   const [calendarView, setCalendarView] = useState('day');
-  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [selectedDate, setSelectedDate] = useState(date ? currentDate : date);
+  const [viewingDate, setViewingDate] = useState(currentDate)
 
-  const previousMonthDate = selectedDate.minus({ months: 1 });
-  const nextMonthDate = selectedDate.plus({ months: 1 });
+  const previousMonthDate = viewingDate.minus({ months: 1 });
+  const nextMonthDate = viewingDate.plus({ months: 1 });
 
   const monthDays = Array.from(
-    new Array(selectedDate.daysInMonth),
+    new Array(viewingDate.daysInMonth),
     (_, index) => ++index
   );
 
-  const yearRange = getYearRange(selectedDate.year);
+  const yearRange = getYearRange(viewingDate.year);
   const lastPreviousYear = yearRange[0] - 1;
   const firstFollowingYear = yearRange[yearRange.length - 1] + 1;
 
   const previousMonthDays = Array.from(
-    new Array(selectedDate.startOf('month').weekday),
+    new Array(viewingDate.startOf('month').weekday),
     (_, index) => previousMonthDate.daysInMonth - index
   ).reverse();
 
@@ -49,26 +50,26 @@ export default function Calendar({ date = null, onSelect }) {
 
   const handlePreviousNavigation = () => {
     if (calendarView === 'day') {
-      const newDate = selectedDate.minus({ months: 1 });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.minus({ months: 1 });
+      setViewingDate(newDate);
     } else if (calendarView === 'month') {
-      const newDate = selectedDate.minus({ year: 1 });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.minus({ year: 1 });
+      setViewingDate(newDate);
     } else if (calendarView === 'year') {
-      const newDate = selectedDate.set({ year: lastPreviousYear });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.set({ year: lastPreviousYear });
+      setViewingDate(newDate);
     }
   };
   const handleNextNavigation = () => {
     if (calendarView === 'day') {
-      const newDate = selectedDate.plus({ months: 1 });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.plus({ months: 1 });
+      setViewingDate(newDate);
     } else if (calendarView === 'month') {
-      const newDate = selectedDate.plus({ year: 1 });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.plus({ year: 1 });
+      setViewingDate(newDate);
     } else if (calendarView === 'year') {
-      const newDate = selectedDate.set({ year: firstFollowingYear });
-      setSelectedDate(newDate);
+      const newDate = viewingDate.set({ year: firstFollowingYear });
+      setViewingDate(newDate);
     }
   };
 
@@ -85,59 +86,62 @@ export default function Calendar({ date = null, onSelect }) {
 
   const handleSelectDay = (value) => {
     const newDate = DateTime.fromObject({
-      year: selectedDate.year,
-      month: selectedDate.month,
+      year: viewingDate.year,
+      month: viewingDate.month,
       day: value,
     });
     setSelectedDate(newDate);
+    setViewingDate(newDate)
     onSelect?.(newDate.toISODate());
   };
   const handleSelectPreviousMonthDay = (value) => {
     const newDate = DateTime.fromObject({
-      year: selectedDate.year,
-      month: selectedDate.month - 1,
+      year: viewingDate.year,
+      month: viewingDate.month - 1,
       day: value,
     });
     setSelectedDate(newDate);
+    setViewingDate(newDate)
     onSelect?.(newDate.toISODate());
   };
   const handleSelectNextMonthDay = (value) => {
     const newDate = DateTime.fromObject({
-      year: selectedDate.year,
-      month: selectedDate.month + 1,
+      year: viewingDate.year,
+      month: viewingDate.month + 1,
       day: value,
     });
     setSelectedDate(newDate);
+    setViewingDate(newDate)
     onSelect?.(newDate.toISODate());
   };
 
   const handleSelectMonth = (value) => {
     const newDate = DateTime.fromObject({
-      year: selectedDate.year,
+      year: viewingDate.year,
       month: value,
-      day: selectedDate.day,
+      day: viewingDate.day,
     });
-    setSelectedDate(newDate);
+    setViewingDate(newDate);
     setCalendarView('day');
   };
 
   const handleSelectYear = (value) => {
     const newDate = DateTime.fromObject({
       year: value,
-      month: selectedDate.month,
-      day: selectedDate.day,
+      month: viewingDate.month,
+      day: viewingDate.day,
     });
-    setSelectedDate(newDate);
+    setViewingDate(newDate);
     setCalendarView('month');
   };
 
   let calendarTitle;
   switch (calendarView) {
     case 'day':
-      calendarTitle = `${selectedDate.monthLong} ${selectedDate.year}`;
+      calendarTitle = `${viewingDate.monthLong} ${viewingDate.year}`;
       break;
     case 'month':
-      calendarTitle = selectedDate.year;
+      calendarTitle = viewingDate.year;
       break;
     case 'year':
       calendarTitle = `${yearRange[0]}-${yearRange[yearRange.length - 1]}`;
@@ -182,16 +186,15 @@ export default function Calendar({ date = null, onSelect }) {
           ))}
           {monthDays.map((item) => (
             <button
-              key={`${selectedDate.month}_${item}`}
+              key={`${viewingDate.month}_${item}`}
               className="calendar-days-view-item"
               data-selected={
-                selectedDate.month === currentDate.month &&
-                currentDate.day === item &&
-                selectedDate.year === currentDate.year
+                selectedDate?.month === viewingDate.month &&
+                viewingDate.day === item &&
+                selectedDate?.year === viewingDate.year
               }
-              // data-selected={selectedDate.day === item}
               data-is-date-today={
-                selectedDate.month === dateToday.month && item === dateToday.day
+                viewingDate.month === dateToday.month && item === dateToday.day
               }
               onClick={() => {
                 handleSelectDay(item);
@@ -219,9 +222,9 @@ export default function Calendar({ date = null, onSelect }) {
         <div className="calendar-months-view">
           {months.map((item, index) => (
             <button
-              kay={item}
+              key={item}
               className="calendar-months-view-item"
-              data-selected={selectedDate.monthShort === item}
+              data-selected={selectedDate?.monthShort === item && selectedDate?.year === viewingDate.year}
               onClick={() => handleSelectMonth(++index)}
             >
               {item}
@@ -241,7 +244,7 @@ export default function Calendar({ date = null, onSelect }) {
             <button
               key={item}
               className="calendar-years-view-item"
-              data-selected={selectedDate.year === item}
+              data-selected={selectedDate?.year === item}
               onClick={() => handleSelectYear(item)}
             >
               {item}

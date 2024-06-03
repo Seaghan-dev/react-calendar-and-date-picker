@@ -12,10 +12,7 @@ import { DateTime } from 'luxon';
 import './DatePicker.css';
 import Calendar from '../Calendar';
 
-// TODO
-// reusability
-
-export default function DatePicker() {
+export default function DatePicker({ value, onChange, ...rest }) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -73,6 +70,7 @@ export default function DatePicker() {
 
   const handleCalendarSelect = (newDate) => {
     setSelectedDate(newDate);
+    onChange?.(newDate)
     setShowCalendar(false);
   };
 
@@ -81,6 +79,7 @@ export default function DatePicker() {
     const isValidDate = DateTime.fromISO(newDate).isValid;
 
     setSelectedDate(newDate);
+    onChange?.(newDate)
 
     if (isValidDate) {
       setShowCalendar(false);
@@ -93,6 +92,7 @@ export default function DatePicker() {
       <div
         className="date-picker-root"
         ref={refs.setReference}
+        data-is-calendar-open={showCalendar}
         {...getReferenceProps()}
       >
         <span className="date-picker-icon">📅</span>
@@ -100,8 +100,9 @@ export default function DatePicker() {
           ref={inputRef}
           placeholder="YYYY-MM-DD"
           className="date-picker-input"
-          value={selectedDate ?? ''}
+          value={value ?? selectedDate ?? ''}
           onChange={handleDateInput}
+          {...rest}
         />
       </div>
       {showCalendar && (
@@ -114,7 +115,7 @@ export default function DatePicker() {
             date={
               DateTime.fromISO(selectedDate).isValid
                 ? selectedDate
-                : DateTime.local().toISODate()
+                : null
             }
             onSelect={handleCalendarSelect}
           />
